@@ -1,0 +1,4 @@
+Hello World! This is a sample text file for vowel frequency analysis.
+It contains various vowels like a, e, i, o, u in different combinations.
+The quick brown fox jumps over the lazy dog.
+Education is the most powerful weapon which you can use to change the world.
