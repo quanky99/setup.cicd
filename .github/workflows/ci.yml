@@ -3,14 +3,29 @@ name: Vowel Frequency Analysis
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Explicitly grant write permissions
     
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4  # Updated to v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Check if data.txt exists
+      run: |
+        if [ ! -f data.txt ]; then
+          echo "Creating data.txt with sample content"
+          echo "Hello World! This is a sample text file for vowel frequency analysis." > data.txt
+          echo "It contains various vowels like a, e, i, o, u in different combinations." >> data.txt
+          echo "The quick brown fox jumps over the lazy dog." >> data.txt
+          echo "Education is the most powerful weapon which you can use to change the world." >> data.txt
+        fi
       
     - name: Build Docker Image
       run: docker build -t vowel-frequency-analyzer:latest .
@@ -18,8 +33,10 @@ jobs:
     - name: Run Docker Container
       env:
         GITHUB_USER: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         docker run --rm \
           -v ${{ github.workspace }}:/workspace \
           -e GITHUB_USER=${{ github.actor }} \
+          -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
           vowel-frequency-analyzer:latest
