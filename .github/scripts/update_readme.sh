@@ -17,6 +17,7 @@ echo -e "\`\`\`" >> README.md
 echo "$FREQ_RESULT" >> README.md
 echo -e "\`\`\`" >> README.md
 echo -e "---" >> README.md
+echo "Testing the vowel frequency analyzer with new content!" >> data.txt
 
 # Commit and push changes
 git add README.md
